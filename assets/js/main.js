@@ -1,3 +1,7 @@
+import Controls  from "./controls.js"
+import Timer  from  "./timer.js"
+
+
 
 const btnPlay = document.querySelector('.play')
 const btnPause = document.querySelector('.pause')
@@ -7,34 +11,47 @@ const btnSet = document.querySelector('.set')
 const btnSoundOn = document.querySelector('.sound-on')
 const btnSoundOff = document.querySelector('.sound-off')
 
-let minutes;
+const minutesDisplay = document.querySelector('.minutes')
+const secondsDisplay = document.querySelector('.seconds')
 
-btnPlay.addEventListener('click', function(){
-  btnPlay.classList.toggle('hide')
-  btnPause.classList.toggle('hide')
-  btnSet.classList.add('hide')
-  btnStop.classList.remove('hide')
+let minutes = Number(minutesDisplay.textContent)
+let timerTimeout
+
+
+const controls = Controls()
+
+const timer = Timer({
+  minutesDisplay,
+  secondsDisplay,
+  timerTimeout,
+  resetControls
 })
 
-btnPause.addEventListener('click', function(){
-  btnPlay.classList.toggle('hide')
-  btnPause.classList.toggle('hide')
+btnPlay.addEventListener('click', function () {
+  controls.play()
+  timer.countdown()
 })
 
-btnStop.addEventListener('click', function(){
-  btnPause.classList.add('hide')
-  btnPlay.classList.remove('hide')
-  btnSet.classList.remove('hide')
-  btnStop.classList.add('hide')
+btnPause.addEventListener('click', function () {
+  controls.pause()
+})
+
+btnStop.addEventListener('click', function () {
+  controls.resetControls()
+  timer.resetTimer()
 })
 
 
-btnSoundOn.addEventListener('click', function(){
+btnSet.addEventListener('click', function () {
+
+})
+
+btnSoundOn.addEventListener('click', function () {
   btnSoundOn.classList.toggle('hide')
   btnSoundOff.classList.toggle('hide')
 })
 
-btnSoundOff.addEventListener('click', function(){
+btnSoundOff.addEventListener('click', function () {
   btnSoundOn.classList.toggle('hide')
   btnSoundOff.classList.toggle('hide')
 })
