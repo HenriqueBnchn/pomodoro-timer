@@ -1,42 +1,45 @@
-export default function Controls(){
+export default function Controls({
+  btnPlay,
+  btnPause,
+  btnSet,
+  btnStop,
+  btnSoundOff,
+  btnSoundOn
+}){
 
-  function resetControls(){
+  function play(){
+    btnPlay.classList.add('hide')
+    btnPause.classList.remove('hide')
+    btnSet.classList.add('hide')
+    btnStop.classList.remove('hide')
+  }
+  function reset(){
     btnPause.classList.add('hide')
     btnPlay.classList.remove('hide')
     btnSet.classList.remove('hide')
     btnStop.classList.add('hide')
   }
 
-  function play(){
-    btnPlay.classList.toggle('hide')
-    btnPause.classList.toggle('hide')
-    btnSet.classList.add('hide')
-    btnStop.classList.remove('hide')
-  }
 
   function pause(){
     btnPlay.classList.toggle('hide')
     btnPause.classList.toggle('hide')
   }
 
-  function stop(){
 
-  }
-
-  function set(){
+  function getMinutes(){
     let newMinutes = prompt('Quantos minutos?')
-    if(!minutes){
+    if(!newMinutes){
       return false
     }
-    minutes = newMinutes
+    return newMinutes
   }
   
   return {
-    resetControls,
+    reset,
     play,
     pause,
-    stop,
-    set
+    getMinutes
   }
 
 }
