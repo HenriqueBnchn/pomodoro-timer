@@ -1,7 +1,9 @@
+import Sounds from "./sounds.js"
+
 export default function Timer({
   minutesDisplay,
   secondsDisplay,
-  resetControls,
+  resetControls
 }){
   let timerTimeout
   let minutes = Number(minutesDisplay.textContent)
@@ -11,9 +13,12 @@ export default function Timer({
     clearTimeout(timerTimeout)
   }
 
-  function updateDisplay(minutes, seconds) {
+  function updateDisplay(newMinutes, seconds) {
+    newMinutes = newMinutes === undefined ? minutes  : newMinutes
+    seconds = seconds === undefined ? 0 : seconds
+
     secondsDisplay.textContent = String(seconds).padStart(2, '0')
-    minutesDisplay.textContent = String(minutes).padStart(2, '0')
+    minutesDisplay.textContent = String(newMinutes).padStart(2, '0')
   }
 
 
@@ -21,17 +26,19 @@ export default function Timer({
     timerTimeout = setTimeout(function () {
       let seconds = Number(secondsDisplay.textContent)
       let minutes = Number(minutesDisplay.textContent)
+      let isFinished = minutes <= 0 && seconds <= 0
 
       updateDisplay(minutes, 0)
 
-      if (minutes <= 0) {
-        reset()
-
+      if (isFinished) {
+        resetControls()
+        updateDisplay()
+        Sounds().timeEnd()
         return
       }
 
       if (seconds <= 0) {
-        seconds = 2
+        seconds = 60
         --minutes
       }
 

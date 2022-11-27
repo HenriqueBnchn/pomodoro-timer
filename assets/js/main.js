@@ -1,22 +1,18 @@
 import Controls  from "./controls.js"
 import Timer  from  "./timer.js"
+import Sounds  from "./sounds.js"
+import { Elements } from "./elements.js"
 
-
-
-const btnPlay = document.querySelector('.play')
-
-const btnPause = document.querySelector('.pause')
-const btnStop = document.querySelector('.stop')
-const btnSet = document.querySelector('.set')
-
-const btnSoundOn = document.querySelector('.sound-on')
-const btnSoundOff = document.querySelector('.sound-off')
-
-const minutesDisplay = document.querySelector('.minutes')
-const secondsDisplay = document.querySelector('.seconds')
-
-let minutes = Number(minutesDisplay.textContent)
-
+const {
+  btnPlay,
+  btnPause,
+  btnSet,
+  btnStop,
+  btnSoundOn,
+  btnSoundOff,
+  minutesDisplay,
+  secondsDisplay
+} = Elements
 
 const controls = Controls({
   btnPause,
@@ -30,22 +26,27 @@ const controls = Controls({
 const timer = Timer({
   minutesDisplay,
   secondsDisplay,
-  reset: controls.reset,
+  resetControls: controls.reset
 })
+
+const sound = Sounds()
 
 btnPlay.addEventListener('click', function() {
   controls.play()
   timer.countdown()
+  sound.buttonPress()
 })
 
 btnPause.addEventListener('click', function() {
   controls.pause()
   timer.hold()
+  sound.buttonPress()
 })
 
 btnStop.addEventListener('click', function() {
   controls.reset()
   timer.reset()
+  sound.buttonPress()
 })
 
 
@@ -57,17 +58,18 @@ btnSet.addEventListener('click', function() {
     return
   }
 
-  minutes =  newMinutes
-  timer.updateDisplay(minutes, 0)
-  timer.updateMinutes(minutes)
+  timer.updateDisplay(newMinutes, 0)
+  timer.updateMinutes(newMinutes)
 })
 
 btnSoundOn.addEventListener('click', function() {
-  btnSoundOn.classList.toggle('hide')
-  btnSoundOff.classList.toggle('hide')
+  sound.bgAudio.play()
+  btnSoundOn.classList.add('hide')
+  btnSoundOff.classList.remove('hide')
 })
 
 btnSoundOff.addEventListener('click', function() {
-  btnSoundOn.classList.toggle('hide')
-  btnSoundOff.classList.toggle('hide')
+  sound.bgAudio.pause()
+  btnSoundOn.classList.remove('hide')
+  btnSoundOff.classList.add('hide')
 })
